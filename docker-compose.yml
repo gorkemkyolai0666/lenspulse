@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: lenspulse
+      POSTGRES_PASSWORD: lenspulse123
+      POSTGRES_DB: lenspulse
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    ports:
+      - "4036:4036"
+    environment:
+      DATABASE_URL: postgresql://lenspulse:lenspulse123@postgres:5432/lenspulse?schema=public
+      JWT_SECRET: lenspulse-dev-secret
+      FRONTEND_URL: http://localhost:3036
+      PORT: 4036
+    depends_on:
+      - postgres
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3036:3036"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:4036/api
+
+volumes:
+  pgdata:

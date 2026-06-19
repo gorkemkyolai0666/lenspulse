@@ -1,0 +1,164 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Shop {
+  id        String   @id @default(uuid())
+  name      String
+  address   String   @default("")
+  city      String   @default("")
+  district  String   @default("")
+  phone     String   @default("")
+  email     String   @default("")
+  taxNo     String   @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users         User[]
+  customers     Customer[]
+  appointments  Appointment[]
+  orders        Order[]
+  prescriptions Prescription[]
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  firstName    String
+  lastName     String
+  role         UserRole @default(optician)
+  specialty    String   @default("")
+  shopId       String
+  shop         Shop     @relation(fields: [shopId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+enum UserRole {
+  admin
+  optician
+  sales
+  technician
+}
+
+model Customer {
+  id        String    @id @default(uuid())
+  firstName String
+  lastName  String
+  phone     String
+  email     String    @default("")
+  tcNo      String    @default("")
+  birthDate DateTime?
+  address   String    @default("")
+  city      String    @default("")
+  notes     String    @default("")
+  shopId    String
+  shop      Shop      @relation(fields: [shopId], references: [id])
+  appointments  Appointment[]
+  orders        Order[]
+  prescriptions Prescription[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+enum AppointmentType {
+  exam
+  fitting
+  pickup
+  follow_up
+}
+
+enum AppointmentStatus {
+  scheduled
+  confirmed
+  in_progress
+  completed
+  cancelled
+  no_show
+}
+
+model Appointment {
+  id            String            @id @default(uuid())
+  date          DateTime
+  duration      Int               @default(30)
+  type          AppointmentType   @default(exam)
+  status        AppointmentStatus @default(scheduled)
+  notes         String            @default("")
+  opticianName  String            @default("")
+  customerId    String
+  customer      Customer          @relation(fields: [customerId], references: [id])
+  shopId        String
+  shop          Shop              @relation(fields: [shopId], references: [id])
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+}
+
+enum OrderStatus {
+  quoted
+  confirmed
+  in_production
+  ready
+  delivered
+  cancelled
+}
+
+enum LensType {
+  single_vision
+  bifocal
+  progressive
+  blue_light
+  photochromic
+  contact
+  other
+}
+
+model Order {
+  id             String      @id @default(uuid())
+  frameBrand     String      @default("")
+  frameModel     String      @default("")
+  lensType       LensType    @default(single_vision)
+  lensCoating    String      @default("")
+  status         OrderStatus @default(quoted)
+  totalPrice     Float       @default(0)
+  paidAmount     Float       @default(0)
+  orderDate      DateTime
+  deliveryDate   DateTime?
+  notes          String      @default("")
+  customerId     String
+  customer       Customer    @relation(fields: [customerId], references: [id])
+  prescriptionId String?
+  prescription   Prescription? @relation(fields: [prescriptionId], references: [id])
+  shopId         String
+  shop           Shop        @relation(fields: [shopId], references: [id])
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+}
+
+model Prescription {
+  id         String   @id @default(uuid())
+  sphR       Float    @default(0)
+  sphL       Float    @default(0)
+  cylR       Float    @default(0)
+  cylL       Float    @default(0)
+  axisR      Int      @default(0)
+  axisL      Int      @default(0)
+  addR       Float    @default(0)
+  addL       Float    @default(0)
+  pd         Float    @default(62)
+  doctorName String   @default("")
+  date       DateTime
+  notes      String   @default("")
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id])
+  shopId     String
+  shop       Shop     @relation(fields: [shopId], references: [id])
+  orders     Order[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}

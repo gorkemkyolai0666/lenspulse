@@ -1,0 +1,141 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@600;700&display=swap');
+
+@layer base {
+  :root {
+    --bg-primary: #f8fafc;
+    --bg-secondary: #ffffff;
+    --bg-sidebar: #0f172a;
+    --bg-sidebar-hover: #1e293b;
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+    --text-sidebar: #e2e8f0;
+    --text-sidebar-muted: #94a3b8;
+    --border-color: #e2e8f0;
+    --brand: #0f172a;
+    --accent: #c9a227;
+    --accent-light: #d4af37;
+    --success: #059669;
+    --danger: #dc2626;
+    --warning: #d97706;
+  }
+
+  .dark {
+    --bg-primary: #020617;
+    --bg-secondary: #0f172a;
+    --bg-sidebar: #020617;
+    --bg-sidebar-hover: #1e293b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --text-sidebar: #f1f5f9;
+    --text-sidebar-muted: #64748b;
+    --border-color: #1e293b;
+    --brand: #f1f5f9;
+    --accent: #d4af37;
+    --accent-light: #f0c14b;
+    --success: #34d399;
+    --danger: #f87171;
+    --warning: #fbbf24;
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'DM Sans', system-ui, sans-serif;
+  }
+
+  .font-display {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+}
+
+@layer components {
+  .enterprise-card {
+    @apply rounded-lg border transition-shadow;
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+  }
+
+  .enterprise-card:hover {
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  }
+
+  .stat-card {
+    @apply enterprise-card p-5 flex flex-col gap-2;
+  }
+
+  .btn-primary {
+    @apply px-5 py-2.5 rounded-lg font-medium text-white transition-all;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    border: 1px solid rgba(201, 162, 39, 0.3);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 4px 16px rgba(201, 162, 39, 0.25);
+  }
+
+  .btn-accent {
+    @apply px-5 py-2.5 rounded-lg font-medium transition-all;
+    background: linear-gradient(135deg, #c9a227, #d4af37);
+    color: #0f172a;
+  }
+
+  .btn-secondary {
+    @apply px-5 py-2.5 rounded-lg font-medium transition-all;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+  }
+
+  .input-field {
+    @apply w-full px-4 py-2.5 rounded-lg outline-none transition-all;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+  }
+
+  .input-field:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-success {
+    @apply badge;
+    background: rgba(5, 150, 105, 0.1);
+    color: var(--success);
+  }
+
+  .badge-warning {
+    @apply badge;
+    background: rgba(217, 119, 6, 0.1);
+    color: var(--warning);
+  }
+
+  .badge-danger {
+    @apply badge;
+    background: rgba(220, 38, 38, 0.1);
+    color: var(--danger);
+  }
+
+  .badge-info {
+    @apply badge;
+    background: rgba(15, 23, 42, 0.08);
+    color: var(--text-secondary);
+  }
+
+  .badge-gold {
+    @apply badge;
+    background: rgba(201, 162, 39, 0.15);
+    color: var(--accent);
+  }
+}
